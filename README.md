@@ -1,195 +1,454 @@
-# LiveKit Voice Agent - AI Avatar IT Support Assistant
+# LiveKit Voice Agent + HR Policy AI Assistant
 
-A voice-enabled AI support assistant built with LiveKit that provides real-time IT support through an interactive avatar. The agent can help users troubleshoot software issues, unblock accounts, send email notifications, and provide support ticket documentation.
+A full-stack **AI-powered HR support assistant** that combines:
 
-## Features
+* 🎤 **Real-time Voice AI Agent** using LiveKit
+* 👤 **Interactive AI Avatar** using Beyond Presence
+* 🤖 **RAG-based HR Policy Chatbot** using LangChain + ChromaDB
+* 🌐 **Modern Web Client** using Next.js
 
-- 🎤 **Voice Interaction**: Real-time voice conversations with speech-to-text and text-to-speech capabilities
-- 👤 **AI Avatar**: Interactive avatar powered by Beyond Presence (bey) for visual engagement
-- 🛠️ **IT Support Tools**:
-  - Unblock user accounts
-  - Send email notifications and support ticket summaries
-  - Screen sharing support for visual troubleshooting
-- 🧠 **Intelligent Assistance**: Powered by OpenAI GPT-4.1-mini for natural conversations
-- 🔊 **Audio Enhancements**:
-  - Noise cancellation for clear audio
-  - Background audio player with thinking sounds
-  - Voice activity detection (VAD)
-- 📧 **Email Integration**: Automated email sending for support ticket documentation
-- 🔌 **External API Integration**: Connect to external services for HR policy queries
+The system allows employees to **talk with an AI avatar**, ask **HR policy questions**, troubleshoot issues, and receive **automated email support summaries**.
 
-## Prerequisites
+---
 
-- Python 3.13 or higher
-- [uv](https://github.com/astral-sh/uv) package manager
-- LiveKit account and credentials
-- Beyond Presence (bey) avatar ID
-- OpenAI API key
-- Gmail account with App Password (for email functionality)
+# 🚀 Features
 
-## Installation
+## 🎤 Voice AI Assistant
 
-1. Clone the repository:
+* Real-time voice conversations
+* Speech-to-text and text-to-speech
+* Voice activity detection (VAD)
+* Noise cancellation
+* Thinking sounds while processing
+
+## 👤 AI Avatar
+
+* Interactive avatar powered by **Beyond Presence**
+* Human-like visual engagement
+* Live avatar lip-sync with speech
+
+## 🤖 HR Policy RAG Chatbot
+
+* Retrieval-Augmented Generation
+* Answers questions based on HR policy documents
+* Semantic vector search using **ChromaDB**
+* Context-aware responses using **LangChain**
+
+## 🛠️ HR Support Tools
+
+The voice agent can:
+
+* Unblock employee accounts
+* Send support emails
+* Document support tickets
+* Assist with login issues
+* Guide troubleshooting using screen sharing
+* Query HR policy knowledge base via API
+
+## 📧 Email Integration
+
+* Gmail SMTP integration
+* Sends ticket summaries to users
+* Supports CC recipients
+
+## 🔌 External API Integration
+
+The Voice Agent connects to the **HR RAG backend** to answer HR policy questions.
+
+---
+
+# 🏗 System Architecture
+
+```
+                        +----------------------+
+                        |   Next.js Frontend   |
+                        |   HR Chat Client     |
+                        +----------+-----------+
+                                   |
+                                   |
+                        REST API /api/v1/ask
+                                   |
+                                   v
+                    +-----------------------------+
+                    |  Flask RAG Backend API      |
+                    |  LangChain + ChromaDB       |
+                    +--------------+--------------+
+                                   |
+                                   |
+                            HR Policy Docs
+                                   |
+                                   v
+                          Vector Embeddings
+
+
+        +------------------------------------------------+
+        |             LiveKit Voice Agent                |
+        |                                                |
+        |  STT (AssemblyAI)                              |
+        |  LLM (OpenAI GPT-4.1-mini)                     |
+        |  TTS (Cartesia Sonic 3)                        |
+        |  Avatar (Beyond Presence)                      |
+        |                                                |
+        |  Tools:                                        |
+        |  • unblock_user()                              |
+        |  • send_email()                                |
+        |  • HR policy API query                         |
+        +------------------------------------------------+
+```
+
+---
+
+# 📁 Project Structure
+
+```
+project-root/
+│
+├── livekit-voice-agent/           # Voice AI assistant
+│   ├── agent.py                   # Main voice agent
+│   ├── main.py                    # Alternative agent
+│   ├── prompts.py                 # Agent instructions
+│   ├── tools.py                   # Agent tools
+│   ├── api_call.py                # HR API integration
+│   ├── pyproject.toml
+│   └── .env.local
+│
+├── chat-bot-langchain-latest/     # HR RAG backend
+│   ├── app/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   └── services/
+│   ├── chroma_db/
+│   ├── main.py
+│   └── pyproject.toml
+│
+└── chat-client/                   # Next.js frontend
+    ├── app/
+    ├── public/
+    ├── package.json
+    └── tsconfig.json
+```
+
+---
+
+# 🛠 Tech Stack
+
+## AI & Backend
+
+* Python 3.13+
+* Flask
+* LangChain
+* ChromaDB
+* OpenAI GPT-4.1-mini
+* OpenAI text-embedding-3-large
+
+## Voice AI
+
+* LiveKit Agents
+* AssemblyAI (STT)
+* Cartesia Sonic 3 (TTS)
+* Silero VAD
+* Beyond Presence Avatar
+
+## Frontend
+
+* Next.js 16
+* React 19
+* TypeScript
+* Tailwind CSS
+* Bun
+
+## Infrastructure
+
+* Docker
+* ChromaDB
+* Gmail SMTP
+
+---
+
+# 📋 Prerequisites
+
+* Python **3.13+**
+* Node.js **20+**
+* Bun (recommended)
+* OpenAI API Key
+* LiveKit Account
+* Beyond Presence Avatar ID
+* Gmail App Password
+* Git
+
+---
+
+# 🔧 Installation
+
+# 1️⃣ Clone Repository
+
 ```bash
 git clone <repository-url>
+cd project-root
+```
+
+---
+
+# 2️⃣ Setup Voice Agent
+
+```
 cd livekit-voice-agent
 ```
 
-2. Install dependencies using uv:
+Install dependencies:
+
 ```bash
 uv sync
 ```
 
-3. Create a `.env.local` file in the project root with the following variables:
+Create `.env.local`
+
 ```env
-# LiveKit Configuration
-LIVEKIT_URL=your_livekit_url
-LIVEKIT_API_KEY=your_livekit_api_key
-LIVEKIT_API_SECRET=your_livekit_api_secret
+LIVEKIT_URL=
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
 
-# Beyond Presence Avatar
-BEY_AVATAR_ID=your_avatar_id
+BEY_AVATAR_ID=
 
-# OpenAI Configuration
-OPENAI_API_KEY=your_openai_api_key
+OPENAI_API_KEY=
 
-# Gmail Configuration (for email functionality)
-GMAIL_USER=your_email@gmail.com
-GMAIL_APP_PASSWORD=your_app_password
+GMAIL_USER=
+GMAIL_APP_PASSWORD=
 
-# External API (optional)
-EXTERNAL_API_URL=http://localhost:5003/api/v1/ask
+EXTERNAL_API_URL=http://localhost:5000/api/v1/ask
 ```
 
-## Project Structure
+---
+
+# 3️⃣ Setup HR RAG Backend
 
 ```
-livekit-voice-agent/
-├── agent.py              # Main agent implementation with entrypoint
-├── main.py               # Alternative agent implementation
-├── prompts.py            # Agent instructions and prompts
-├── tools.py              # Function tools (unblock_user, send_email)
-├── api_call.py           # External API integration
-├── pyproject.toml        # Project dependencies and configuration
-├── uv.lock               # Dependency lock file
-└── .env.local            # Environment variables (create this)
+cd chat-bot-langchain-latest
 ```
 
-## Usage
+Install dependencies:
 
-### Running the Agent
-
-Start the agent server:
 ```bash
+uv pip install -e .
+```
+
+Create `.env`
+
+```env
+OPENAI_API_KEY=
+PORT=5000
+FLASK_ENV=development
+```
+
+Run backend:
+
+```bash
+python main.py
+```
+
+Backend runs at:
+
+```
+http://localhost:5000
+```
+
+---
+
+# 4️⃣ Setup Frontend Client
+
+```
+cd chat-client
+```
+
+Install dependencies:
+
+```bash
+bun install
+```
+
+Start client:
+
+```bash
+bun dev
+```
+
+Frontend runs at:
+
+```
+http://localhost:3000
+```
+
+---
+
+# 🚀 Running the Full System
+
+### Step 1 — Start HR Backend
+
+```
+cd chat-bot-langchain-latest
+python main.py
+```
+
+### Step 2 — Start Voice Agent
+
+```
+cd livekit-voice-agent
 uv run python agent.py
 ```
 
-Or use the alternative implementation:
-```bash
-uv run python main.py
+### Step 3 — Start Frontend
+
+```
+cd chat-client
+bun dev
 ```
 
-The agent will:
-1. Connect to the LiveKit room
-2. Initialize the AI avatar
-3. Start listening for voice input
-4. Provide IT support assistance
+---
 
-### Agent Capabilities
+# 📡 API Endpoints
 
-The assistant can:
-- **Troubleshoot Issues**: Guide users through software problems while viewing their shared screen
-- **Unblock Users**: Remove user blocks from the system (for GenericCorporateApp)
-- **Send Emails**: Automatically send support ticket summaries via email
-- **Handle Login Issues**: Assist with username/password format issues
-- **Create Tickets**: Document support interactions and send summaries
+## Ask HR Policy
 
-### Support Workflow
-
-1. User reports an issue
-2. Agent asks questions to understand the problem
-3. User shares screen (optional) for visual troubleshooting
-4. Agent guides through solution steps
-5. On success/failure:
-   - Agent requests user's email
-   - Creates and documents a support ticket
-   - Sends email summary with ticket details
-
-## Configuration
-
-### Agent Instructions
-
-The agent behavior is configured in `prompts.py` with detailed instructions for:
-- Persona and tone
-- Support workflow
-- Email templates
-- GenericCorporateApp specific support
-
-### Tools
-
-The agent has access to two main tools defined in `tools.py`:
-
-1. **unblock_user(username: str)**: Unblocks a user account by clearing the block file and notifying the client
-2. **send_email(to_email: str, subject: str, message: str, cc_email: Optional[str])**: Sends email notifications via Gmail SMTP
-
-### Audio Configuration
-
-- **STT**: AssemblyAI Universal Streaming (English)
-- **TTS**: Cartesia Sonic 3
-- **VAD**: Silero Voice Activity Detection
-- **Noise Cancellation**: BVC (or BVCTelephony for SIP participants)
-
-## Dependencies
-
-- `livekit-agents[bey,hedra,silero,turn-detector]`: Core LiveKit agents framework with plugins
-- `livekit-plugins-noise-cancellation`: Noise cancellation plugin
-- `httpx`: Async HTTP client for API calls
-- `python-dotenv`: Environment variable management
-- `requests`: HTTP library
-
-## Development
-
-### Adding New Tools
-
-To add a new function tool, create a function decorated with `@function_tool()` in `tools.py`:
-
-```python
-from livekit.agents import function_tool, RunContext
-
-@function_tool()
-async def my_new_tool(context: RunContext, param: str) -> str:
-    """Tool description for the LLM"""
-    # Your implementation
-    return "result"
+```
+POST /api/v1/ask
 ```
 
-Then add it to the `Assistant` class in `agent.py`:
-```python
-tools=[unblock_user, send_email, my_new_tool]
+Request
+
+```json
+{
+  "question": "What is the leave policy?"
+}
 ```
 
-### Modifying Agent Behavior
+Response
 
-Edit `prompts.py` to change the agent's instructions, persona, or workflow. The instructions are loaded in `agent.py` when creating the `Assistant` instance.
+```json
+{
+  "answer": "Employees are entitled to...",
+  "status": "success"
+}
+```
 
-## Troubleshooting
+---
 
-### Common Issues
+## Health Check
 
-1. **Avatar not appearing**: Check that `BEY_AVATAR_ID` is correctly set in `.env.local`
-2. **Email sending fails**: Ensure Gmail App Password is used (not regular password) and 2FA is enabled
-3. **Audio issues**: Verify noise cancellation settings match your use case (BVC vs BVCTelephony)
-4. **API connection errors**: Check that external API URL is correct and service is running
+```
+GET /api/v1/health
+```
 
-## License
+Response
 
-[Add your license here]
+```json
+{
+  "status": "healthy",
+  "message": "Service running"
+}
+```
 
-## Contributing
+---
 
-[Add contribution guidelines here]
+# 🔄 How the RAG System Works
 
-## Support
+1️⃣ HR documents are split into chunks
+2️⃣ Chunks converted into embeddings
+3️⃣ Stored in **ChromaDB vector database**
+4️⃣ User query converted to embedding
+5️⃣ Top relevant documents retrieved
+6️⃣ GPT-4.1-mini generates contextual answer
 
-For issues and questions, please [open an issue](link-to-issues) or contact the development team.
+---
 
+# 🛠 Voice Agent Tools
+
+### unblock_user(username)
+
+Removes block file and unlocks account.
+
+### send_email(to_email, subject, message)
+
+Sends support ticket summary via Gmail SMTP.
+
+### ask_hr_policy(question)
+
+Calls backend API to answer HR policy questions.
+
+---
+
+# 🐳 Docker Support
+
+Run ChromaDB:
+
+```
+docker-compose -f chroma-docker-compose.yml up -d
+```
+
+Run backend:
+
+```
+docker-compose up -d
+```
+
+---
+
+# 🧪 Testing
+
+```
+cd chat-bot-langchain-latest
+python testing/testing.py
+```
+
+---
+
+# 🐛 Troubleshooting
+
+### Avatar not appearing
+
+Check `BEY_AVATAR_ID`.
+
+### Email not sending
+
+Use **Gmail App Password**, not regular password.
+
+### Backend connection error
+
+Ensure backend is running on port **5000**.
+
+### ChromaDB error
+
+Check permissions of `chroma_db/`.
+
+---
+
+# 📄 License
+
+MIT License
+
+---
+
+# 👤 Author
+
+**Sudip Das**
+
+GitHub
+https://github.com/dassudip2001
+
+---
+
+# 🤝 Contributing
+
+Pull requests are welcome.
+For major changes, please open an issue first.
+
+---
+
+# 📞 Support
+
+If you encounter issues, please open a GitHub issue.
+
+---
+
+**Project created for AI-powered HR Support and Voice Assistant Systems.**
